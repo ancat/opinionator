@@ -43,6 +43,24 @@ function ELO_algorithm($winner = 1000, $loser = 1000){
   return $array; 
 }
 
+<form action = "<?php $_PHP_SELF ?>" method="POST">
+Content ID<br></br>
+<select name='cid'>
+<?php
+if ($stmt = $mysqli->prepare("select product_name from Products")){
+$stmt->execute();
+$stmt->bind_result($cid);
+while($stmt->fetch()) 
+{
+  $cid = htmlspecialchars($cid);
+  echo "<option value='$cid'>$cid</option>\n";  
+}
+$stmt->close();
+$mysqli->close();
+}
+?>
+
+
 
 
 
