@@ -32,7 +32,7 @@
     }
 
     $random_url = substr(md5(rand()*rand()), 0, 16);
-    $sekure_hmac = hash_hmac('md5', $random_url, 'why cant this semester be over already');
+    $sekure_hmac = hash_hmac('md5', $random_url, HMAC_KEY);
     $query = pg_prepare($postgres, 'create_url', 'INSERT INTO urls (url_unique_string, url_active, showdown_id) VALUES ($1, $2, $3)');
     $result = pg_execute($postgres, 'create_url', array($random_url, 1, $showdown_id));
     if (!$result) {
