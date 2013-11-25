@@ -61,12 +61,23 @@ echo pg_last_error($postgres);
     $result = pg_fetch_array($result, NULL, PGSQL_ASSOC);
     $product_one = $result['product_id_1'];
     $product_two = $result['product_id_2'];
+    $showdown_id = $result['showdown_id'];
 
     $device_infos = pg_prepare($postgres, 'product_info', 'SELECT * FROM products WHERE product_id = $1');
     $product_one = pg_execute($postgres, 'product_info', array($product_one));
     $product_one = pg_fetch_array($product_one, NULL, PGSQL_ASSOC);
     $product_two = pg_execute($postgres, 'product_info', array($product_two));
     $product_two = pg_fetch_array($product_two, NULL, PGSQL_ASSOC);
+
+    $voting_info = pg_prepare($postgres, 'vote_info', 'SELECT count(*) FROM votes WHERE showdown_id = $1 AND product_id = $2');
+    $product_one['votes'] = pg_fetch_array(pg_execute($postgres, 'vote_info', array($showdown_id, $product_one['product_id'])), NULL, PGSQL_ASSOC);
+    $product_one['votes'] = $product_one['votes']['count'];
+
+    $product_two['votes'] = pg_fetch_array(pg_execute($postgres, 'vote_info', array($showdown_id, $product_two['product_id'])), NULL, PGSQL_ASSOC);
+    $product_two['votes'] = $product_two['votes']['count'];
+
+    $product_one['fraction'] = ($product_one['votes']/(double)($product_one['votes'] + $product_two['votes']))*100;
+    $product_two['fraction'] = 100-$product_one['fraction'];
 
     if ($admin_mode) {
         $tpl = $mustache->loadTemplate('admin_showdown');

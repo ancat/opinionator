@@ -58,14 +58,15 @@
     <div class="col-lg-12">
                 <h2>Manage Your Showdown</h2>
              <div class="progress" style="height: 50px;">
-                <div class="progress-bar progress-bar-warning" style="width: 75%"></div>
-                <div class="progress-bar progress-bar-info" style="width: 25%"></div>
+                <div class="progress-bar progress-bar-warning" style="width: {{{product_one.fraction}}}%"></div>
+                <div class="progress-bar progress-bar-info" style="width: {{{product_two.fraction}}}%"></div>
               </div>
     </div>
 </div>
 <div class="row">
     <div class="col-lg-5" style="text-align: center">
         <h2>{{{product_one.product_name}}}</h2>
+        <h4>{{{product_one.votes}}} votes</h4>
         <img src="{{{product_one.product_image}}}" style="width: 100%"/>
     </div>
     <div class="col-lg-2" style="text-align: center">
@@ -73,6 +74,7 @@
     </div>
     <div class="col-lg-5" style="text-align: center">
         <h2>{{{product_two.product_name}}}</h2>
+        <h4>{{{product_two.votes}}} votes</h4>
         <img src="{{{product_two.product_image}}}" style="width: 100%"/>
     </div>
 </div>
