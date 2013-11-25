@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule /make_showdown make_showdown\.php 
