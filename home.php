@@ -4,6 +4,8 @@ how is everyone doing ?
 
 
 <?php
+
+
 error_reporting(-1);
 
 
@@ -39,10 +41,11 @@ function ELO_algorithm($winner = 1000, $loser = 1000){
   $Ra_prime = $Ra + $k1*($Sa - $Ea);
   $Rb_prime = $Rb + $k1*($Sb - $Eb);
 
-  $array = [$Ra_prime, $Rb_prime];
-  return $array; 
+  $return_array = array($Ra_prime, $Rb_prime);
+  return $return_array; 
 }
 
+/*
 <form action = "<?php $_PHP_SELF ?>" method="POST">
 Content ID<br></br>
 <select name='cid'>
@@ -58,42 +61,8 @@ while($stmt->fetch())
 $stmt->close();
 $mysqli->close();
 }
+*/
 ?>
-
-
-
-
-
-$query= "SELECT * FROM products";
-
-$stmt = $mysqli->prepare($query);
-if ($stmt->execute()){
-
-	echo "<table border>";
-    echo "<tr>";
-    echo "<td><b>job_num</b></td>";
-    echo "<td><b>job</b></td>";
-    echo "<td><b>industry</b></td>";
-    hecho "</tr>";
-
-    $stmt->bind_result($col1,$col2,$col3);
-    while ($stmt->fetch()) {
-       echo "\t<tr>\n";
-       echo "\t\t<td>$col1</td>\n";
-       echo "\t\t<td>$col2</td>\n";
-       echo "\t\t<td>$col3</td>\n";
-       echo "\t</tr>\n";
-    }
-    echo "</table>\n";
-}
-
-$stmt->close();
-
-
-?> 
-
-
-
 
 </body>
 </html>
