@@ -1,5 +1,6 @@
 <?PHP
     require_once 'includes/include_all.php';
+    require_once 'includes/elo.php';
 
     $showdown_url = $_GET['id'];
     $admin_url = isset($_GET['admin']) ? $_GET['admin'] : '';
@@ -34,19 +35,25 @@
                 $product_id = $product_two;
             }
 
-/****** 
+            $score_query = pg_prepare($postgres, 'get_score', 'SELECT product_rating FROM products WHERE product_id = $1');
+            $score_one = pg_execute($postgres, 'get_score', array($product_one));
+            $score_one = pg_fetch_array($score_one, NULL, PGSQL_ASSOC);
+            $score_one = $score_one['product_rating'];
+            $score_two = pg_execute($postgres, 'get_score', array($product_two));
+            $score_two = pg_fetch_array($score_two, NULL, PGSQL_ASSOC);
+            $score_two = $score_two['product_rating'];
+            list($score_one, $score_two) = ELO_algorithm($score_one, $score_two);
+            print_r($score_one);
+            print_r($score_two);
 
-INSERT ELO STUFF HERE
-I REPEAT
-INSERT ELO STUFF HERE
-AND THEN WE'RE DONE PROBABLY****/
             $insert_vote = pg_prepare($postgres, 'insert_vote', 'INSERT INTO votes (showdown_id, ip_address, timestamp, product_id) VALUES ($1, $2, $3, $4)');
             $result = pg_execute($postgres, 'insert_vote', array($showdown_id, $_SERVER['REMOTE_ADDR'], $_SERVER['REQUEST_TIME'], $product_id));
             if (!$result) {
                 show_error(pg_last_error($postgres));
                 die();
             } else {
-                die('er ware good');
+                show_success('Your vote was recorded! Click <a href="/">here</a> to continue.');
+                die();
             }
         }
     }
