@@ -43,8 +43,10 @@
             $score_two = pg_fetch_array($score_two, NULL, PGSQL_ASSOC);
             $score_two = $score_two['product_rating'];
             list($score_one, $score_two) = ELO_algorithm($score_one, $score_two);
-            print_r($score_one);
-            print_r($score_two);
+
+            $update_score = pg_prepare($postgres, 'update_score', 'UPDATE products SET product_rating = $1 WHERE product_id = $2');
+            $update = pg_execute($postgres, 'update_score', array($score_one, $product_one));
+            $update = pg_execute($postgres, 'update_score', array($score_two, $product_two));
 
             $insert_vote = pg_prepare($postgres, 'insert_vote', 'INSERT INTO votes (showdown_id, ip_address, timestamp, product_id) VALUES ($1, $2, $3, $4)');
             $result = pg_execute($postgres, 'insert_vote', array($showdown_id, $_SERVER['REMOTE_ADDR'], $_SERVER['REQUEST_TIME'], $product_id));
